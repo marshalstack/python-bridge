@@ -1,0 +1,34 @@
+{
+    "name": "marshal/python-bridge",
+    "description": "Execute python scripts in Marshal",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Marshal\\PythonBridge\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Collins Pamba",
+            "email": "collinspamba@outlook.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../eventmanager"
+        },
+        {
+            "type": "path",
+            "url": "../logger"
+        }
+    ],
+    "require": {
+        "marshal/eventmanager": "dev-master",
+        "marshal/logger": "dev-master",
+        "psr/http-message": "^2.0@dev",
+        "psr/http-client": "^1.0@dev"
+    }
+}
