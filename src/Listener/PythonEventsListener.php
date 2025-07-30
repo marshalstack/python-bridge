@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Marshal\PythonBridge\Listener;
 
 use Marshal\EventManager\EventListenerInterface;
-use Marshal\PythonBridge\ConfigProvider;
 use Marshal\PythonBridge\Event\RunPythonScriptEvent;
 use Marshal\PythonBridge\Transport\TransportInterface;
 
 class PythonEventsListener implements EventListenerInterface
 {
-    private const string LOGGER_NAME = ConfigProvider::PYTHON_BRIDGE_LOGGER;
-    private array $validationMessages = [];
+    private string $validationMessage;
 
     public function __construct(private TransportInterface $transport, private array $config)
     {
@@ -35,7 +33,7 @@ class PythonEventsListener implements EventListenerInterface
 
         $scriptConfig = $this->config['scripts'][$script];
         if (! $this->isValid($scriptConfig)) {
-            $event->setErrorMessage('invalidScriptConfig', "Script $script validation error");
+            $event->setErrorMessage('invalidScriptConfig', "Script $script validation error: {$this->validationMessage}");
             return;
         }
 
@@ -66,17 +64,17 @@ class PythonEventsListener implements EventListenerInterface
     {
         // @todo validation messages
         if (! \is_array($config)) {
-            $this->validationMessages[] = "Must be valid array";
+            $this->validationMessage = "Must be valid array";
             return FALSE;
         }
 
         if (! isset($config['module'])) {
-            $this->validationMessages[] = "Module not found";
+            $this->validationMessage = "Module not found";
             return FALSE;
         }
 
         if (! isset($config['function'])) {
-            $this->validationMessages[] = "Function not found";
+            $this->validationMessage = "Function not found";
             return FALSE;
         }
 

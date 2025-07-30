@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a429c674ad4ba70cb6bc1e15a2493141",
+    "content-hash": "577d2ac1c53dcb5d3008655d3b20cbfb",
     "packages": [
         {
             "name": "marshal/eventmanager",
@@ -43,7 +43,7 @@
         },
         {
             "name": "psr/container",
-            "version": "1.x-dev",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/container.git",

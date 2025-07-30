@@ -6,14 +6,11 @@ namespace Marshal\PythonBridge;
 
 class ConfigProvider
 {
-    public const string PYTHON_BRIDGE_LOGGER = 'marshal::python-bridge';
-
     public function __invoke(): array
     {
         return [
             'dependencies' => $this->getDependencies(),
             'events' => $this->getEventsConfig(),
-            'loggers' => $this->getLoggerConfig(),
             'python' => $this->getServerConfig(),
         ];
     }
@@ -21,11 +18,6 @@ class ConfigProvider
     private function getDependencies(): array
     {
         return [
-            'delegators' => [
-                Listener\PythonEventsListener::class => [
-                    \Marshal\Logger\LoggerFactoryDelegator::class,
-                ],
-            ],
             'factories' => [
                 Listener\PythonEventsListener::class => Listener\PythonEventsListenerFactory::class,
                 Transport\TransportInterface::class => Transport\HttpTransportFactory::class,
@@ -38,20 +30,6 @@ class ConfigProvider
         return [
             Listener\PythonEventsListener::class => [
                 Event\RunPythonScriptEvent::class,
-            ],
-        ];
-    }
-
-    private function getLoggerConfig(): array
-    {
-        return [
-            self::PYTHON_BRIDGE_LOGGER => [
-                'handlers' => [
-                    \Monolog\Handler\ErrorLogHandler::class => [],
-                ],
-                'processors' => [
-                    \Monolog\Processor\PsrLogMessageProcessor::class => [],
-                ],
             ],
         ];
     }
