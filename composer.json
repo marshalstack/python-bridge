@@ -28,9 +28,9 @@
     ],
     "require": {
         "marshal/eventmanager": "dev-master",
-        "marshal/logger": "dev-master",
-        "psr/http-message": "1.0",
-        "psr/http-client": "^1.0"
+        "psr/http-message": "2.0",
+        "psr/http-client": "^1.0",
+        "psr/http-factory": "^1.1"
     },
     "scripts": {
         "python": ". venv/bin/activate && python run.py",

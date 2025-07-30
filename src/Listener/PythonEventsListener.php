@@ -5,16 +5,12 @@ declare(strict_types=1);
 namespace Marshal\PythonBridge\Listener;
 
 use Marshal\EventManager\EventListenerInterface;
-use Marshal\Logger\LoggerFactoryAwareInterface;
-use Marshal\Logger\LoggerFactoryTrait;
 use Marshal\PythonBridge\ConfigProvider;
 use Marshal\PythonBridge\Event\RunPythonScriptEvent;
 use Marshal\PythonBridge\Transport\TransportInterface;
 
-class PythonEventsListener implements EventListenerInterface, LoggerFactoryAwareInterface
+class PythonEventsListener implements EventListenerInterface
 {
-    use LoggerFactoryTrait;
-
     private const string LOGGER_NAME = ConfigProvider::PYTHON_BRIDGE_LOGGER;
     private array $validationMessages = [];
 
@@ -33,21 +29,13 @@ class PythonEventsListener implements EventListenerInterface, LoggerFactoryAware
     {
         $script = $event->getName();
         if (! isset($this->config['scripts'][$script])) {
-            $this->getLogger(self::LOGGER_NAME)->error(
-                "Script config not found in config",
-                [
-                    'name' => $script
-                ]
-            );
+            $event->setErrorMessage('scriptNotFound', "Script $script config not found in config");
             return;
         }
 
         $scriptConfig = $this->config['scripts'][$script];
         if (! $this->isValid($scriptConfig)) {
-            $this->getLogger(self::LOGGER_NAME)->error(
-                "Script $script validation error",
-                $this->validationMessages
-            );
+            $event->setErrorMessage('invalidScriptConfig', "Script $script validation error");
             return;
         }
 
@@ -70,7 +58,7 @@ class PythonEventsListener implements EventListenerInterface, LoggerFactoryAware
 
             $event->setResponse($response);
         } catch (\Throwable $e) {
-            $this->getLogger(self::LOGGER_NAME)->error($e->getMessage());
+            $event->setErrorMessage('error', $e->getMessage());
         }
     }
 
